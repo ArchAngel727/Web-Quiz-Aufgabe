@@ -45,4 +45,20 @@ export class UIManager {
         break;
     }
   }
+
+  validate_username(): boolean {
+    const box = document.getElementById("username-box") as HTMLInputElement;
+    const text = box.value ?? "";
+    let is_valid: boolean = true;
+
+    if (text.length === 0) {
+      is_valid = false;
+    }
+
+    if (!(text.length > 3 && text.length < 21)) {
+      is_valid = false;
+    }
+
+    return is_valid;
+  }
 }

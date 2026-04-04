@@ -7,6 +7,11 @@ async function main() {
   let ui_manager = new UIManager();
 
   document.getElementById("username-submit")!.onclick = () => {
+    if (!ui_manager.validate_username()) {
+      window.alert("Invalid username");
+      return;
+    }
+
     ui_manager.next();
     console.log(ui_manager.current_page);
     console.log(ui_manager.pages[ui_manager.current_page]);
