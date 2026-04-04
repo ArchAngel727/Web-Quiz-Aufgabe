@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Multiple Choice Quiz</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div id="ui-username" class="mb-4">
+        <input type="text" class="username-box" />
+        <button id="username-submit" class="username-button">Start</button>
+      </div>
+      <div id="ui-quiz" class="card hidden">
+        <div class="card-body">
+          <h1 class="card-title text-center">Quiz</h1>
+          <!-- Place the question, the options and the results here -->
+        </div>
+      </div>
+      <div id="ui-result" class="mt-5 hidden">
+        <h2>Leaderboard</h2>
+        <!-- Place the leaderboard list here -->
+      </div>
+    </div>
+    <script type="module" src="dist/main.js"></script>
+  </body>
+</html>

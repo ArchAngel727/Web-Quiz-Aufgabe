@@ -1,0 +1,12 @@
+* {
+  color: #cdd6f4;
+  border: none;
+}
+
+body {
+  background-color: #1e1e2e;
+}
+
+.hidden {
+  display: none;
+}
