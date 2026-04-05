@@ -50,8 +50,8 @@ export class UIManager {
         this.pages[1].classList.add("hidden");
         this.pages[2].classList.remove("hidden");
 
-        save_score();
-        load_leaderboard();
+        app.score_manager.save_score();
+        this.load_leaderboard(app);
 
         break;
     }
@@ -73,7 +73,7 @@ export class UIManager {
     return is_valid;
   }
 
-  private generate_card(app: App) {
+  private generate_card(app: App): void {
     let quiz_ui = document.getElementById("ui-quiz")!;
     let div = document.createElement("div");
     let str = "";
@@ -107,5 +107,13 @@ export class UIManager {
 
     quiz_ui.innerHTML = "";
     quiz_ui.appendChild(div);
+  }
+
+  private load_leaderboard(app: App): void {
+    let leaderboard = document.getElementById("ui-result")!;
+    console.log(leaderboard);
+    app.score_manager.get_scores().forEach((score) => {
+      leaderboard.innerHTML += `<p>${score}</p>`;
+    });
   }
 }
