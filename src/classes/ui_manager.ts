@@ -1,4 +1,5 @@
-import { Question } from "./question_manager";
+import { App } from "../main.js";
+import { Question } from "./question_manager.js";
 
 enum Page {
   Username = 0,
@@ -7,28 +8,29 @@ enum Page {
 }
 
 export class UIManager {
-  current_page: Page;
-  pages: Array<HTMLElement> = [];
+  private current_page: Page;
+  private pages: Array<HTMLElement>;
 
   constructor() {
     this.current_page = Page.Username;
+    this.pages = [];
 
     this.pages.push(document.getElementById("ui-username")!);
     this.pages.push(document.getElementById("ui-quiz")!);
     this.pages.push(document.getElementById("ui-result")!);
   }
 
-  next() {
+  next(app: App) {
     this.current_page = (this.current_page + 1) % 3;
-    this.update_page();
+    this.update_page(app);
   }
 
-  goto(page: Page) {
+  goto(page: Page, app: App) {
     this.current_page = page;
-    this.update_page();
+    this.update_page(app);
   }
 
-  private update_page() {
+  private update_page(app: App) {
     switch (this.current_page) {
       case Page.Username:
         this.pages[0].classList.remove("hidden");
@@ -39,11 +41,18 @@ export class UIManager {
         this.pages[0].classList.add("hidden");
         this.pages[1].classList.remove("hidden");
         this.pages[2].classList.add("hidden");
+
+        this.generate_card(app);
+
         break;
       case Page.Result:
         this.pages[0].classList.add("hidden");
         this.pages[1].classList.add("hidden");
         this.pages[2].classList.remove("hidden");
+
+        save_score();
+        load_leaderboard();
+
         break;
     }
   }
@@ -64,12 +73,14 @@ export class UIManager {
     return is_valid;
   }
 
-  generate_card(question: Question, parent: HTMLElement) {
+  private generate_card(app: App) {
+    let quiz_ui = document.getElementById("ui-quiz")!;
     let div = document.createElement("div");
     let str = "";
+    let question: Question = app.question_manager.get_question();
 
     str += `<h2>${question.question}</h2>`;
-    str += `<p>${question.category}</p>`;
+    str += `<p>${question.category} | ${question.difficulty}</p>`;
     div.innerHTML = str;
 
     question.options.forEach((option) => {
@@ -78,12 +89,23 @@ export class UIManager {
       btn.classList.add("button-bg");
       btn.innerText = option;
       btn.onclick = () => {
-        this.next();
+        if (question.answer === option) {
+          app.score_manager.correct(question.difficulty);
+        } else {
+          app.score_manager.incorrect();
+        }
+
+        if (app.score_manager.get_progress() === 5) {
+          this.next(app);
+        }
+
+        this.generate_card(app);
       };
 
       div.appendChild(btn);
     });
 
-    parent.appendChild(div);
+    quiz_ui.innerHTML = "";
+    quiz_ui.appendChild(div);
   }
 }

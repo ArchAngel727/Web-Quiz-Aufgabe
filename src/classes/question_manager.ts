@@ -39,7 +39,7 @@ function shuffle<T>(array: Array<T>) {
 }
 
 export class QuestionManager {
-  questions: Array<Question>;
+  private questions: Array<Question>;
 
   constructor() {
     this.questions = [];
@@ -89,6 +89,13 @@ export class QuestionManager {
     });
 
     return questions;
+  }
+
+  get_question(): Question {
+    let min = Math.ceil(0);
+    let max = Math.floor(this.questions.length);
+    let i = Math.floor(Math.random() * (max - min + 1)) + min;
+    return structuredClone(this.questions[i]);
   }
 
   static filter_by_category(questions: Array<Question>, category: CATEGORY): Array<Question> {
