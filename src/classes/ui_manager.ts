@@ -1,3 +1,5 @@
+import { Question } from "./question_manager";
+
 enum Page {
   Username = 0,
   Quiz = 1,
@@ -60,5 +62,28 @@ export class UIManager {
     }
 
     return is_valid;
+  }
+
+  generate_card(question: Question, parent: HTMLElement) {
+    let div = document.createElement("div");
+    let str = "";
+
+    str += `<h2>${question.question}</h2>`;
+    str += `<p>${question.category}</p>`;
+    div.innerHTML = str;
+
+    question.options.forEach((option) => {
+      let btn = document.createElement("button");
+
+      btn.classList.add("button-bg");
+      btn.innerText = option;
+      btn.onclick = () => {
+        this.next();
+      };
+
+      div.appendChild(btn);
+    });
+
+    parent.appendChild(div);
   }
 }

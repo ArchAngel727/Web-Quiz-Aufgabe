@@ -3,8 +3,17 @@
   border: none;
 }
 
-body {
+.bg {
   background-color: #1e1e2e;
+}
+
+.button-bg {
+  background-color: #313244;
+}
+
+.button-bg:hover {
+  color: #11111b;
+  background-color: #a6e3a1;
 }
 
 .hidden {

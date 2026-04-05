@@ -1,8 +1,9 @@
-import { QuestionManager, Question } from './classes/question_manager.js'
+import { QuestionManager } from './classes/question_manager.js'
 import { UIManager } from './classes/ui_manager.js';
 
+
 async function main() {
-  let quic_ui = document.getElementById("ui-quiz");
+  let quiz_ui = document.getElementById("ui-quiz")!;
   let question_manager = new QuestionManager();
   let ui_manager = new UIManager();
 
@@ -13,27 +14,13 @@ async function main() {
     }
 
     ui_manager.next();
-    console.log(ui_manager.current_page);
-    console.log(ui_manager.pages[ui_manager.current_page]);
   };
 
   await question_manager.load_questions();
 
-  question_manager.generate_questions().forEach((q: Question) => {
-    let div = document.createElement("div");
-    let str = "";
+  ui_manager.generate_card(question_manager.get_questions()[0], quiz_ui);
 
-    str += `Question: ${q.question}\n`;
-    str += `Answer: ${q.answer}\n`;
-    str += `Options: ${q.options}\n`;
-    str += `Category: ${q.category}\n`;
-    str += `Difficulty: ${q.difficulty}\n`;
-
-    div.innerText = str;
-
-    quic_ui?.appendChild(div);
-    quic_ui?.appendChild(document.createElement("br"));
-  });
+  ui_manager.next();
 }
 
 main()
