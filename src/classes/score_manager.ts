@@ -1,16 +1,27 @@
 import { DIFFICULTY } from "./question_manager.js";
 
+interface Score {
+  username: string,
+  score: number
+}
+
 export class ScoreManager {
   private progress: number;
   private score: number;
-  private scores: Array<number>;
+  private scores: Array<Score>;
+  private username: string;
 
   constructor() {
     this.progress = 0;
     this.score = 0;
     this.scores = [];
+    this.username = "";
 
     this.load_scores();
+  }
+
+  set_username(str: string): void {
+    this.username = str;
   }
 
   get_progress(): number {
@@ -45,28 +56,33 @@ export class ScoreManager {
         return;
       }
 
-      let num = parseInt(item) ?? [];
-      this.scores.push(num);
+      let splt = item.split("|");
+      let [username, score_str] = splt;
+      let score = parseInt(score_str) ?? [];
+
+      this.scores.push({ username: username, score: score });
     });
   }
 
   save_score(): void {
     let scores_str = "";
 
-    this.scores.push(this.score);
-    this.scores.forEach((item) => {
-      scores_str += `${item},`;
-    });
-    scores_str.replace(/,$/g, "");
+    if (this.username.length === 0) {
+      return;
+    }
 
-    console.log(this.score);
-    console.log(this.scores);
-    console.log(scores_str);
+    let score: Score = { username: this.username, score: this.score };
+    this.scores.push(score);
+    this.scores.forEach((item) => {
+      scores_str += `,${item.username}|${item.score}`;
+    });
+    scores_str = scores_str.slice(1);
 
     localStorage.setItem("scores", scores_str);
   }
 
-  get_scores(): Array<number> {
+  get_scores(): Array<Score> {
+    this.load_scores();
     return structuredClone(this.scores);
   }
 }

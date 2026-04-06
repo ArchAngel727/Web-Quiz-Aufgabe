@@ -1,4 +1,4 @@
-import { App } from "../main.js";
+import { App } from "./app.js";
 import { Question } from "./question_manager.js";
 
 enum Page {
@@ -11,13 +11,25 @@ export class UIManager {
   private current_page: Page;
   private pages: Array<HTMLElement>;
 
-  constructor() {
+  constructor(app: App) {
     this.current_page = Page.Username;
     this.pages = [];
+    const box = document.getElementById("username-box") as HTMLInputElement;
 
     this.pages.push(document.getElementById("ui-username")!);
     this.pages.push(document.getElementById("ui-quiz")!);
     this.pages.push(document.getElementById("ui-result")!);
+
+    document.getElementById("username-submit")!.onclick = () => {
+      const username = box.value ?? "";
+      if (!this.validate_username(username)) {
+        window.alert("Invalid username");
+        return;
+      }
+
+      app.score_manager.set_username(username);
+      this.next(app);
+    };
   }
 
   next(app: App) {
@@ -57,16 +69,14 @@ export class UIManager {
     }
   }
 
-  validate_username(): boolean {
-    const box = document.getElementById("username-box") as HTMLInputElement;
-    const text = box.value ?? "";
+  validate_username(str: string): boolean {
     let is_valid: boolean = true;
 
-    if (text.length === 0) {
+    if (str.length === 0) {
       is_valid = false;
     }
 
-    if (!(text.length > 3 && text.length < 21)) {
+    if (!(str.length > 3 && str.length < 21)) {
       is_valid = false;
     }
 
@@ -78,6 +88,10 @@ export class UIManager {
     let div = document.createElement("div");
     let str = "";
     let question: Question = app.question_manager.get_question();
+
+    if (question === null || question === undefined) {
+      console.log("how?");
+    }
 
     str += `<h2>${question.question}</h2>`;
     str += `<p>${question.category} | ${question.difficulty}</p>`;
@@ -111,9 +125,9 @@ export class UIManager {
 
   private load_leaderboard(app: App): void {
     let leaderboard = document.getElementById("ui-result")!;
-    console.log(leaderboard);
     app.score_manager.get_scores().forEach((score) => {
-      leaderboard.innerHTML += `<p>${score}</p>`;
+      console.log(score);
+      leaderboard.innerHTML += `<p>${score.username} | ${score.score}</p>`;
     });
   }
 }
