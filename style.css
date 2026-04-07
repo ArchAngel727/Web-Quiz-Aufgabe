@@ -1,4 +1,8 @@
 * {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  box-sizing: border-box;
   color: #cdd6f4;
   border: none;
 }
@@ -7,15 +11,147 @@
   background-color: #1e1e2e;
 }
 
-.button-bg {
+.button {
   background-color: #313244;
+  font-size: 20pt;
 }
 
-.button-bg:hover {
+.button:hover,
+.button:focus {
   color: #11111b;
   background-color: #a6e3a1;
+  transition: 0.25s;
 }
 
 .hidden {
-  display: none;
+  display: none !important;
+}
+
+.text {
+  color: #11111b;
+}
+
+.username-text {
+  font-size: 16pt;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.username-box {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.username-input-box {
+  width: 20vw;
+  height: 6vh;
+  background-color: #313244;
+  text-align: center;
+  font-size: 16pt;
+  margin-bottom: 4vh;
+  line-height: 4vh;
+}
+
+.username-input-box:focus {
+  border: 1px solid #74c7ec;
+  transition: 0.25s;
+}
+
+.username-button {
+  width: max(6em, 16vw);
+  height: 5vh;
+  margin-bottom: 2vh;
+}
+
+.username-button-2 {
+  width: max(6em, 12vw);
+  height: 4vh;
+  margin-bottom: 2vh;
+}
+
+#ui-quiz {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 50vw;
+  height: 60vh;
+  padding: 12px;
+  background-color: #313244;
+  border-radius: 12px;
+}
+
+.talign {
+  text-align: center;
+}
+
+.card-button {
+  background-color: #45475a;
+  width: 20vw;
+  height: 12vh;
+  font-size: clamp(1em, 2cqw, 8em);
+  text-align: center;
+}
+
+.button-grid {
+  margin-top: auto;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 3vw;
+  row-gap: 4vh;
+  align-self: center;
+}
+
+#ui-result {
+  width: 50vw;
+  justify-self: center;
+  background-color: #313244;
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.score {
+  width: 40vw;
+  height: 4vh;
+  font-size: 16pt;
+  text-align: center;
+  line-height: 4vh;
+}
+
+.score.score:nth-child(2) {
+  border-radius: 4px 4px 0px 0px;
+}
+
+.score:last-child {
+  border-radius: 0px 0px 4px 4px;
+}
+
+.score:nth-child(even) {
+  background-color: #45475a;
+}
+
+.score:nth-child(odd) {
+  background-color: #585b70;
+}
+
+.score:hover {
+  color: #1e1e2e;
+  background-color: #94e2d5;
+  transition: 0.25s;
 }

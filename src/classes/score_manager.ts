@@ -68,6 +68,7 @@ export class ScoreManager {
     let scores_str = "";
 
     if (this.username.length === 0) {
+      console.log("No username");
       return;
     }
 

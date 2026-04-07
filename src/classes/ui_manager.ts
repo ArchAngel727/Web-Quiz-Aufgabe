@@ -4,7 +4,7 @@ import { Question } from "./question_manager.js";
 enum Page {
   Username = 0,
   Quiz = 1,
-  Result = 2
+  Leaderboard = 2
 }
 
 export class UIManager {
@@ -29,6 +29,10 @@ export class UIManager {
 
       app.score_manager.set_username(username);
       this.next(app);
+    };
+
+    document.getElementById("username-leaderboard")!.onclick = () => {
+      this.goto(Page.Leaderboard, app);
     };
   }
 
@@ -57,7 +61,7 @@ export class UIManager {
         this.generate_card(app);
 
         break;
-      case Page.Result:
+      case Page.Leaderboard:
         this.pages[0].classList.add("hidden");
         this.pages[1].classList.add("hidden");
         this.pages[2].classList.remove("hidden");
@@ -80,12 +84,17 @@ export class UIManager {
       is_valid = false;
     }
 
+    if (str.indexOf(" ") != -1) {
+      is_valid = false;
+    }
+
     return is_valid;
   }
 
   private generate_card(app: App): void {
     let quiz_ui = document.getElementById("ui-quiz")!;
     let div = document.createElement("div");
+    let btn_grid = document.createElement("div");
     let str = "";
     let question: Question = app.question_manager.get_question();
 
@@ -93,14 +102,17 @@ export class UIManager {
       console.log("how?");
     }
 
-    str += `<h2>${question.question}</h2>`;
-    str += `<p>${question.category} | ${question.difficulty}</p>`;
+    str += `<h2 class="talign">${question.question}</h2>`;
+    str += `<p class="talign">${question.category} | ${question.difficulty}</p>`;
     div.innerHTML = str;
+    div.classList.add("card");
+    btn_grid.classList.add("button-grid");
 
     question.options.forEach((option) => {
       let btn = document.createElement("button");
 
-      btn.classList.add("button-bg");
+      btn.classList.add("button");
+      btn.classList.add("card-button");
       btn.innerText = option;
       btn.onclick = () => {
         if (question.answer === option) {
@@ -116,9 +128,10 @@ export class UIManager {
         this.generate_card(app);
       };
 
-      div.appendChild(btn);
+      btn_grid.appendChild(btn);
     });
 
+    div.append(btn_grid);
     quiz_ui.innerHTML = "";
     quiz_ui.appendChild(div);
   }
@@ -126,8 +139,7 @@ export class UIManager {
   private load_leaderboard(app: App): void {
     let leaderboard = document.getElementById("ui-result")!;
     app.score_manager.get_scores().forEach((score) => {
-      console.log(score);
-      leaderboard.innerHTML += `<p>${score.username} | ${score.score}</p>`;
+      leaderboard.innerHTML += `<p class="score">User: ${score.username} | Score: ${score.score} out of 9 | ${((score.score / 9) * 100).toFixed(2)}%</p>`;
     });
   }
 }
